@@ -5,7 +5,7 @@
   <style>
   body {background-color: powderblue;}
   h1   {color: blue;}
-  p    {color: red;}
+  p    {color: black;}
   </style>
 
 
@@ -14,12 +14,32 @@
     <meta charset="utf-8">
     <title>Doreen's Store</title>
   </head>
+
   <body>
 
 <h1>Welcome to The Doreen Store!</h1>
 
-<p><%= @products %></p>
+<p>Please enter your email here:</p>
 
+<form action="http://127.0.0.1:9393/" method="POST/pay">
+  <p><input type="text" name="email" placeholder="email"></p>
+  <button type="submit">Submit</button>
+
+<p>&nbsp; </p>
+<p>&nbsp; </p>
+<p>Please select something you want to buy:</p>
+
+  <% @products.each do |product| %>
+    <p><input type="radio" name="productId" value="<%= product["id"] %>">
+      <%= product["description"] %>
+      <%= product["price"] %> cents
+    <button type="submit">Buy</button></p>
+  <% end %>
+
+
+
+
+</form>
 
   </body>
 </html>
