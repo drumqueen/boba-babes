@@ -4,12 +4,51 @@
 
   <style>
   body {background-color: powderblue;}
+  body {font-family: sans-serif;}
   h1   {color: blue;}
   p    {color: black;}
   </style>
 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+
+<script>
+  $(document).ready(function() {
+    console.log("This script is working!");
+
+  Stripe.setPublishableKey("pk_test_LbI08udSLMwndDsRLWEwjE9N");
 
 
+  var tokenResponseHandler = function(status, response) {
+  console.log("Response from Stripe token call:");
+  console.log(response);
+  // TODO: check for any input validation errors
+  // TODO: if there are errors, display them at the top of the form
+  // TODO: if there are not errors, add the token info to the form as a hidden field
+  // TODO: submit the form
+};
+
+  $('#payment-form').submit(function(event) {
+    // pause form submission
+    event.preventDefault();
+
+    // prevent the user from submitting twice
+    // by disabling the submit button
+    $("#pay-now").attr('disabled','disabled');
+
+    console.log("Form submission is paused!");
+
+    Stripe.card.createToken({
+  number: $('#card-number').val(),
+  cvc: $('#cvc>').val(),
+  exp_month: $('#card-exp-mo').val(),
+  exp_year: $('#card-exp-yr').val(),
+}, tokenResponseHandler);
+
+  });
+  });
+</script>
 
     <meta charset="utf-8">
     <title>Doreen's Store</title>
@@ -19,24 +58,34 @@
 
 <h1>Welcome to The Doreen Store!</h1>
 
-<p>Please enter your email here:</p>
 
-<form action="http://127.0.0.1:9393/" method="POST/pay">
-  <p><input type="text" name="email" placeholder="email"></p>
-  <button type="submit">Submit</button>
+<p id="error"></p>
 
-<p>&nbsp; </p>
-<p>&nbsp; </p>
+<form id="payment-form" action="http://127.0.0.1:9393/pay" method="POST">
+
 <p>Please select something you want to buy:</p>
 
   <% @products.each do |product| %>
     <p><input type="radio" name="productId" value="<%= product["id"] %>">
       <%= product["description"] %>
-      <%= product["price"] %> cents
-    <button type="submit">Buy</button></p>
+      (<%= product["price"] %> cents)
+    </p>
   <% end %>
 
+<p>&nbsp; </p>
 
+<p>Please enter your email here:</p>
+  <p><input type="text" name="email" placeholder="email"></p>
+
+<p>&nbsp; </p>
+
+<p>Please enter your credit card info here:</p>
+  <p><input id="card-number" type="text" placeholder="card number"></p>
+  <p><input id="card-cardexp-mo" type="text" placeholder="card expiration month"></p>
+  <p><input id="card-exp-yr" type="text" placeholder="card expiration year"></p>
+  <p><input id="cvc" type="text" placeholder="cvc"></p>
+
+     <button id="pay-now" type="submit">Pay now</button>
 
 
 </form>
