@@ -1,5 +1,8 @@
 require 'sinatra'
 require 'sqlite3'
+require 'stripe'
+require_relative 'secrets'
+
 
 get '/' do
   "This is the home page."
@@ -25,8 +28,34 @@ get '/success' do
 end
 
 post '/pay' do
-  puts "The data sent to the /pay POST route is:"
-  p params
 
-  redirect '/success'
+  # connect to the database
+  db = SQLite3::Database.open('store.db')
+
+  # query the products table and print the result
+  @products = db.execute("SELECT id, description, price FROM products;")
+
+  p params
+  p params[:productId].to_i
+  product_id = params[:productId].to_i
+
+  amount = db.execute('SELECT price FROM products WHERE id=?', product_id)[0][0]
+  p amount
+
+  stripe_token = params[:stripeToken]
+
+  email = params[:email]
+
+  Stripe::Charge.create(
+    :amount => amount,
+    :currency => "usd",
+    :source => stripe_token, # obtained with Stripe.js
+    :description => email
+  )
+
+  # close database connection
+  db.close
+
+redirect '/success'
+
 end
