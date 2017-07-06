@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <style>
+  body
+  {background-color: white;
+    font-size: 18px;
+    line-height: 50px;
+    font-weight: 600;
+    text-align: center;
+    Letter-spacing: 1px;
+    margin-left: 2px;
+    margin-right: 2px;
+    font-family: trebuchet, sans-serif;
+  }
+
+  h1
+  {color: purple;
+    font-size:28px;
+    line-height: 75px;
+    font-weight: 400;
+    Letter-spacing: 3px;
+    text-align: center;
+    margin-top: 30px;
+    margin-left: 100px;
+    margin-right: 100px;
+  }
+  h3
+  {color: gray;
+    font-size: 10px;
+    line-height: 20px;
+    font-weight: 5px;
+    letter-spacing: 2px;
+    text-align: center;
+    margin-top: 200px;
+  }
+select-style
+.select-style {
+    border: 1px solid #ccc;
+    width: 50px;
+    padding: 5px;
+    font-size: 45px;
+    line-height: 1px;
+    border: 10;
+    border-radius: 3px;
+    height: 50px;
+  }
+.select-style select {
+    padding: 10px 8px;
+    width: 40%;
+    border: none;
+}
+
+  p    {color: black;}
+  p.error {color: red;}
+  </style>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<script type="text/javascript" src="https://js.stripe.com/v3/"></script>
+
+
+
+    <meta charset="utf-8">
+    <title>Boba Store</title>
+  </head>
+  <body>
+
+<!-- <p id="error" class="error"></p> -->
+
+<form id="boba-form" action="http://127.0.0.1:9393/pay" method="POST">
+
+
+  <h1>You're currently in the <%= place %>!</h1>
+
+    <h1> The nearest boba store is: <%= storename %> </h1>
+
+    <p>Select your boba:</p>
+
+    <% @products.each do |product| %>
+      <p><input type="radio" name="productId" value="<%= product["id"] %>">
+        <%= product["description"] %> milk tea
+        ($<%= product["price"]/100 %>.00 with free delivery)
+      </p>
+    <% end %>
+
+<button id="select-now" type="submit">Go</button>
+
+<br>
+<br>
+</form>
+
+  </body>
+</html>

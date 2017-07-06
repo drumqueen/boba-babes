@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+  <style>
+  body
+  {background-color: white;
+    font-size: 14px;
+    line-height: 50px;
+    font-weight: 300;
+    text-align: center;
+    Letter-spacing: 1px;
+    margin-left: 2px;
+    margin-right: 2px;
+    font-family: trebuchet, sans-serif;
+  }
+
+  h1
+  {color: purple;
+    font-size:28px;
+    line-height: 75px;
+    font-weight: 400;
+    Letter-spacing: 3px;
+    text-align: center;
+    margin-top: 30px;
+    margin-left: 100px;
+    margin-right: 100px;0
+    margin-bottom: 5px;
+  }
+  </style>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+
+<script>
+$(document).ready(function() {
+  console.log("This script is working!");
+
+  Stripe.setPublishableKey("pk_test_LbI08udSLMwndDsRLWEwjE9N");
+
+  var tokenResponseHandler = function(status, response) {
+
+    console.log("Response from Stripe token call:");
+    console.log(response);
+    // TODO: check for any input validation errors
+    // TODO: if there are errors, display them at the top of the form
+    // TODO: if there are not errors, add the token info to the form as a hidden field
+    // TODO: submit the form
+
+    if (response.error) {
+
+      // Show the errors on the form
+      $('#error').text(response.error.message);
+
+      // Re-enable submission
+      $("#pay-now").attr('disabled', false);
+
+    } else {
+      // find the form
+      var $form = $('#payment-form');
+
+      // add a hidden field to the form
+      var token = response.id;
+      $form.append($('<input type="hidden" name="stripeToken" />').val(token));
+
+      // submit the form
+      $form.unbind().submit();
+    }
+
+
+  };
+console.log("Here");
+  $('#payment-form').submit(function(event) {
+    // pause form submission
+    event.preventDefault();
+
+    // prevent the user from submitting twice
+    // by disabling the submit button
+    $("#pay-now").attr('disabled','disabled');
+
+    console.log("Form submission is paused!");
+
+    Stripe.card.createToken({
+      number: $('#card-number').val(),
+      cvc: $('#cvc').val(),
+      exp_month: $('#card-exp-mo').val(),
+      exp_year: $('#card-exp-yr').val(),
+    }, tokenResponseHandler);
+
+  });
+});
+</script>
+
+    <meta charset="utf-8">
+    <title>Boba Babes</title>
+  </head>
+
+  <body>
+
+<form id="payment-form" action="http://127.0.0.1:9393/success" method="POST">
+  <p id="error" class="error"></p>
+
+  <h1>Your total is <b>$7</b>.</h1>
+
+<p>Please enter your name here:</p>
+  <p><input type="text" name="name" placeholder="name"></p>
+
+<input id="order" name="order" type="hidden" value="<%= @order %>">
+
+<p>Please enter your credit card info here:</p>
+  <p><input id="card-number" type="text" placeholder="card number"></p>
+  <p><input id="card-exp-mo" type="text" placeholder="card expiration month"></p>
+  <p><input id="card-exp-yr" type="text" placeholder="card expiration year"></p>
+  <p><input id="cvc" type="text" placeholder="cvc"></p>
+
+     <button id="pay-now" type="submit">Pay now</button>
+<br>
+<br>
+
+</form>
+
+  </body>
+</html>
