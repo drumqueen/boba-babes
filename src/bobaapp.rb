@@ -3,9 +3,8 @@ enable :sessions
 
 require 'sqlite3'
 require 'stripe'
-require_relative 'bobasecrets'
 
-
+Stripe.api_key = ENV["STRIPE_KEY"]
 
 get '/' do
   # connect to the database
