@@ -8,8 +8,7 @@ services:
     environment:
       - RACK_ENV=production
       - STRIPE_KEY=sk_test_sWQeIEnLCfsMRSU4cO8qqC9Z
-    volumes:
-      - ./src/boba.db:/var/www/docker-sinatra/boba.db
+    
 
   proxy:
     build: ./nginx
