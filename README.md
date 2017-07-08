@@ -16,8 +16,8 @@ docker volume create --name certs-data
 
 # Initialize the certificates from https://certbot.eff.org/ (EFF!).
 docker run -it --rm \
-	-v certs:/etc/letsencrypt \
-  -v certs-data:/data/letsencrypt \
+	-v bobababes_certs:/etc/letsencrypt \
+  -v bobababes_certs-data:/data/letsencrypt \
 	deliverous/certbot \
 	certonly --webroot --webroot-path=/data/letsencrypt -d boba-babes.com
 
