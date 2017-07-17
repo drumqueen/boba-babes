@@ -1,0 +1,25 @@
+#
+# This file should be duplicated for production to have the actual stripe key.
+#
+version: "3"
+services:
+  web:
+    build: .
+    environment:
+      - RACK_ENV=production
+      - STRIPE_KEY=sk_live_1ZaQPifJ7JMD63PNuz9Qyv1q
+
+
+  proxy:
+    build: ./nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - certs:/etc/letsencrypt
+      - certs-data:/data/letsencrypt
+    restart: always
+
+volumes:
+  certs:
+  certs-data:

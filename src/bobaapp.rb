@@ -3,9 +3,8 @@ enable :sessions
 
 require 'sqlite3'
 require 'stripe'
-require_relative 'bobasecrets'
 
-
+Stripe.api_key = ENV["STRIPE_KEY"]
 
 get '/' do
   # connect to the database
@@ -53,8 +52,6 @@ post '/bobaplaces' do
 
   end
 
-@order = "banana"
-
 post '/pay' do
 
   # connect to the database
@@ -66,12 +63,13 @@ post '/pay' do
   # query the products table and print the result
   @products = db.execute("SELECT id, description, price FROM products;")
 
-  product_id = params[:productId].to_i
+  p params[:name]
+  p params[:productId].to_i
 
-  amount = db.execute('SELECT price FROM products WHERE id=?', product_id)[0][0]
-  p amount
+  # amount = db.execute('SELECT price FROM products WHERE id=?', product_id)[0][0]
+  # p amount
 
-  @order = db.execute('SELECT description FROM products WHERE id=?', product_id)[0][0]
+  # @order = db.execute('SELECT description FROM products WHERE id=?', product_id)[0][0]
 
   # close database connection
   db.close

@@ -1,0 +1,28 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    faraday (0.12.1)
+      multipart-post (>= 1.2, < 3)
+    multipart-post (2.0.0)
+    rack (1.6.8)
+    rack-protection (1.5.3)
+      rack
+    sinatra (1.4.8)
+      rack (~> 1.5)
+      rack-protection (~> 1.4)
+      tilt (>= 1.3, < 3)
+    sqlite3 (1.3.13)
+    stripe (3.0.0)
+      faraday (~> 0.9)
+    tilt (2.0.7)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  sinatra
+  sqlite3
+  stripe
+
+BUNDLED WITH
+   1.14.6
