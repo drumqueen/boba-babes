@@ -7,8 +7,13 @@ services:
     build: .
     environment:
       - RACK_ENV=production
+<<<<<<< HEAD
       - STRIPE_KEY=sk_live_1ZaQPifJ7JMD63PNuz9Qyv1q
 
+=======
+      - STRIPE_KEY=sk_test_sWQeIEnLCfsMRSU4cO8qqC9Z
+    
+>>>>>>> b4b74f8a7908c1114dd3309a0e9bc8b42fa560ff
 
   proxy:
     build: ./nginx
