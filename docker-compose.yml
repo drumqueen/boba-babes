@@ -7,7 +7,7 @@ services:
     build: .
     environment:
       - RACK_ENV=production
-      - STRIPE_KEY=sk_live_1ZaQPifJ7JMD63PNuz9Qyv1q
+      - STRIPE_KEY=sk_test_CQSxADZNxofHzSGPBcWVXtux
 
 
   proxy:
