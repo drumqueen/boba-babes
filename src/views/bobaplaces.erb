@@ -90,7 +90,14 @@ var select = '';
 
     <p>Select your boba:</p>
 
-      <p><input type="number" min="0" max="10" name="productId1" value="0">
+    <% @products.each do |product| %>
+      <p><input type="number" min="0" max="10" name="productId" value="<%= product["id"] %>">
+        <%= product["description"] %> milk tea
+        ($<%= product["price"]/100 %>.00 with free delivery)
+      </p>
+    <% end %>
+
+      <!-- <p><input type="number" min="0" max="10" name="productId1" value="0">
         black milk tea
         ($7.00 with free delivery) </p>
 
@@ -100,7 +107,7 @@ var select = '';
 
       <p>  <input type="number" min="0" max="10" name="productId3" value="0">
         thai milk tea
-        ($7.00 with free delivery) </p>
+        ($7.00 with free delivery) </p> -->
 
 <button id="select-now" type="submit">Go</button>
 
