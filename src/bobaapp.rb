@@ -1,8 +1,6 @@
 #!/usr/bin/env ruby
 
 require 'sinatra'
-enable :sessions
-
 require 'sqlite3'
 require 'stripe'
 
