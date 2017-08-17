@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 
+require 'json'
 require 'sinatra'
 require 'sqlite3'
 require 'stripe'
@@ -47,6 +48,9 @@ post '/bobaplaces' do
 
 end
 
+# https://github.com/rails/rails/blob/8e2feedd31df969746898f22576db4d605fc9d9c/activesupport/lib/active_support/core_ext/string/output_safety.rb
+JSON_ESCAPE = { "&" => '\u0026', ">" => '\u003e', "<" => '\u003c', "\u2028" => '\u2028', "\u2029" => '\u2029' }
+JSON_ESCAPE_REGEXP = /[\u2028\u2029&><]/u
 post '/pay' do
   db = SQLite3::Database.open('boba.db')
   db.results_as_hash = true
@@ -64,9 +68,9 @@ post '/pay' do
     }
     @total += item_total
   end
+  @order_escaped_json = @order.to_json.gsub(JSON_ESCAPE_REGEXP, JSON_ESCAPE)
 
   erb :pay
-
 end
 
 

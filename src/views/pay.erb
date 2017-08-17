@@ -38,7 +38,7 @@
 $(document).ready(function() {
   Stripe.setPublishableKey("pk_test_Tqhn4yVmoycEvi5HdSd3i9XF");
 
-  var tokenResponseHandler = function(status, response) {
+  var order = <%= @order_escaped_json %>;
 
   var tokenResponseHandler = function(status, response) {
     // TODO: check for any input validation errors
@@ -58,9 +58,10 @@ $(document).ready(function() {
       // find the form
       var $form = $('#payment-form');
 
-      // add a hidden field to the form
+      // add some hidden fields to the form
       var token = response.id;
       $form.append($('<input type="hidden" name="stripeToken" />').val(token));
+      $('#order').val(JSON.stringify(order));
 
       // submit the form
       $form.unbind().submit();
@@ -109,7 +110,8 @@ $(document).ready(function() {
 <p>Please enter your name here:</p>
   <p><input type="text" name="name" placeholder="name"></p>
 
-<input id="order" name="order" type="hidden" value="<%= @order %>">
+  <input name="total" type="hidden" value="<%= @total %>">
+  <input id="order" name="order" type="hidden" value="">
 
 <p>Please enter your credit card info here:</p>
   <p><input id="card-number" type="text" placeholder="card number"></p>
