@@ -53,6 +53,7 @@ post '/pay' do
 
   products = db.execute("SELECT id, description, price FROM products;")
   @order = {}
+  @total = 0
   products.each do |product|
     quantity = params["product#{product['id']}"].to_i
     item_total = product['price'] * quantity
@@ -61,6 +62,7 @@ post '/pay' do
       'quantity' => quantity,
       'item_total' => item_total,
     }
+    @total += item_total
   end
 
   erb :pay

@@ -36,14 +36,11 @@
 
 <script>
 $(document).ready(function() {
-  console.log("This script is working!");
-
   Stripe.setPublishableKey("pk_test_Tqhn4yVmoycEvi5HdSd3i9XF");
 
   var tokenResponseHandler = function(status, response) {
 
-    console.log("Response from Stripe token call:");
-    console.log(response);
+  var tokenResponseHandler = function(status, response) {
     // TODO: check for any input validation errors
     // TODO: if there are errors, display them at the top of the form
     // TODO: if there are not errors, add the token info to the form as a hidden field
@@ -71,16 +68,14 @@ $(document).ready(function() {
 
 
   };
-console.log("Here");
+
   $('#payment-form').submit(function(event) {
     // pause form submission
     event.preventDefault();
 
     // prevent the user from submitting twice
     // by disabling the submit button
-    $("#pay-now").attr('disabled','disabled');
-
-    console.log("Form submission is paused!");
+    $("#pay-now").attr('disabled', 'disabled');
 
     Stripe.card.createToken({
       number: $('#card-number').val(),
@@ -102,7 +97,14 @@ console.log("Here");
 <form id="payment-form" action="/success" method="POST">
   <p id="error" class="error"></p>
 
-  <h1>Your total is <b>$7</b>.</h1>
+  <p>
+  <% @order.each_pair do |desc, item| %>
+    <%= item['quantity'] %> x <%= desc %> milk tea
+    at $<%= sprintf('%.2f', item['price'] / 100) %> = $<%= sprintf('%.2f', item['item_total'] / 100) %>
+    <br>
+  <% end %>
+  </p>
+  <h1>Your total is <b>$<%= sprintf('%.2f', @total / 100) %></b>.</h1>
 
 <p>Please enter your name here:</p>
   <p><input type="text" name="name" placeholder="name"></p>
