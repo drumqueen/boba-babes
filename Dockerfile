@@ -11,7 +11,7 @@ WORKDIR $APP_ROOT
 
 COPY src/ $APP_ROOT
 
-RUN bundle install
+RUN bundle install --without development
 
 EXPOSE 9292
 
