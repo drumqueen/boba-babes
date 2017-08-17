@@ -13,7 +13,6 @@ get '/' do
   # configure results to be returned as as an array of hashes instead of nested arrays
   db.results_as_hash = true
 
-  # query the places table and print the result
   @places = db.execute("SELECT id, place FROM places;")
 
   # close database connection
@@ -36,7 +35,6 @@ post '/bobaplaces' do
   # configure results to be returned as as an array of hashes instead of nested arrays
   db.results_as_hash = true
 
-  # query the products table and print the result
   @products = db.execute("SELECT id, description, price FROM products;")
   user_input = params[:place]
 
