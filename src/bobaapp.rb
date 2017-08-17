@@ -75,30 +75,29 @@ end
 
 
 post '/success' do
-  # connect to the database
-  db = SQLite3::Database.open('boba.db')
-
-  # configure results to be returned as as an array of hashes instead of nested arrays
-  db.results_as_hash = true
-
-  # query the products table and print the result
-  @products = db.execute("SELECT id, description, price FROM products;")
-
+  total = params[:total]
   name = params[:name]
-
-  #amount = db.execute('SELECT price FROM products WHERE id=?', product_id)[0][0]
   stripe_token = params[:stripeToken]
+  order = JSON.parse(params[:order])
 
+  metadata = {}
+  order.each_pair do |desc, item|
+    metadata[desc] = item['quantity']
+  end
 
-  Stripe::Charge.create(
-    :amount => 700,
-    :currency => "usd",
-    :source => stripe_token, # obtained with Stripe.js
-    :description => name,
-    :metadata => {'order' => params[:order]}
-  )
-  # close database connection
-  db.close
+  begin
+    charge = Stripe::Charge.create(
+      amount: total,
+      currency: "usd",
+      source: stripe_token, # obtained with Stripe.js
+      description: name,
+      metadata: metadata,
+    )
+  rescue Stripe::StripeError => e
+    p e
+    puts e.param
+    raise
+  end
 
   erb :success
 end
