@@ -48,23 +48,20 @@ post '/bobaplaces' do
 end
 
 post '/pay' do
-
-  # connect to the database
   db = SQLite3::Database.open('boba.db')
-
-  # configure results to be returned as as an array of hashes instead of nested arrays
   db.results_as_hash = true
 
-  # query the products table and print the result
-  @products = db.execute("SELECT id, description, price FROM products;")
-
-  # amount = db.execute('SELECT price FROM products WHERE id=?', product_id)[0][0]
-  # p amount
-
-  # @order = db.execute('SELECT description FROM products WHERE id=?', product_id)[0][0]
-
-  # close database connection
-  db.close
+  products = db.execute("SELECT id, description, price FROM products;")
+  @order = {}
+  products.each do |product|
+    quantity = params["product#{product['id']}"].to_i
+    item_total = product['price'] * quantity
+    @order[product['description']] = {
+      'price' => product['price'],
+      'quantity' => quantity,
+      'item_total' => item_total,
+    }
+  end
 
   erb :pay
 
