@@ -14,19 +14,17 @@ get '/' do
   db.results_as_hash = true
 
   # query the places table and print the result
-  puts "database result:"
   @places = db.execute("SELECT id, place FROM places;")
 
   # close database connection
   db.close
 
   erb :home
-
 end
 
 
 post '/' do
-erb :bobaplaces
+  erb :bobaplaces
 end
 
 
@@ -39,7 +37,6 @@ post '/bobaplaces' do
   db.results_as_hash = true
 
   # query the products table and print the result
-  puts "Database query results:"
   @products = db.execute("SELECT id, description, price FROM products;")
   user_input = params[:place]
 
@@ -50,7 +47,7 @@ post '/bobaplaces' do
 
   erb :bobaplaces, :locals => {:place => user_input, :storename => @storename}
 
-  end
+end
 
 post '/pay' do
 
@@ -62,9 +59,6 @@ post '/pay' do
 
   # query the products table and print the result
   @products = db.execute("SELECT id, description, price FROM products;")
-
-  p params[:name]
-  p params[:productId].to_i
 
   # amount = db.execute('SELECT price FROM products WHERE id=?', product_id)[0][0]
   # p amount
@@ -90,20 +84,18 @@ post '/success' do
   @products = db.execute("SELECT id, description, price FROM products;")
 
   name = params[:name]
-  p name
-  p params[:order]
 
   #amount = db.execute('SELECT price FROM products WHERE id=?', product_id)[0][0]
-   stripe_token = params[:stripeToken]
+  stripe_token = params[:stripeToken]
 
 
-Stripe::Charge.create(
+  Stripe::Charge.create(
     :amount => 700,
     :currency => "usd",
     :source => stripe_token, # obtained with Stripe.js
     :description => name,
     :metadata => {'order' => params[:order]}
-)
+  )
   # close database connection
   db.close
 
