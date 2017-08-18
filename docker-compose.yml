@@ -7,8 +7,8 @@ services:
     build: .
     environment:
       - RACK_ENV=production
-      - STRIPE_KEY=sk_test_CQSxADZNxofHzSGPBcWVXtux
-
+      - STRIPE_SECRET_KEY=sk_test_CQSxADZNxofHzSGPBcWVXtux
+      - STRIPE_PUB_KEY=pk_test_Tqhn4yVmoycEvi5HdSd3i9XF
 
   proxy:
     build: ./nginx

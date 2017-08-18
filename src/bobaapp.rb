@@ -5,7 +5,8 @@ require 'sinatra'
 require 'sqlite3'
 require 'stripe'
 
-Stripe.api_key = ENV["STRIPE_KEY"]
+Stripe.api_key = ENV["STRIPE_SECRET_KEY"]
+publishable_key = ENV["STRIPE_PUB_KEY"]
 
 get '/' do
   # connect to the database
@@ -51,7 +52,9 @@ end
 # https://github.com/rails/rails/blob/8e2feedd31df969746898f22576db4d605fc9d9c/activesupport/lib/active_support/core_ext/string/output_safety.rb
 JSON_ESCAPE = { "&" => '\u0026', ">" => '\u003e', "<" => '\u003c', "\u2028" => '\u2028', "\u2029" => '\u2029' }
 JSON_ESCAPE_REGEXP = /[\u2028\u2029&><]/u
+
 post '/pay' do
+  @publishable_key=publishable_key
   db = SQLite3::Database.open('boba.db')
   db.results_as_hash = true
 

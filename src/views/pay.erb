@@ -36,7 +36,7 @@
 
 <script>
 $(document).ready(function() {
-  Stripe.setPublishableKey("pk_test_Tqhn4yVmoycEvi5HdSd3i9XF");
+  Stripe.setPublishableKey("<%= @publishable_key %>");
 
   var order = <%= @order_escaped_json %>;
 
