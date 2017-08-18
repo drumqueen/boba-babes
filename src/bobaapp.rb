@@ -92,6 +92,7 @@ post '/success' do
     charge = Stripe::Charge.create(
       amount: total,
       currency: "usd",
+      source: stripe_token, # obtained with Stripe.js
       description: name,
       metadata: metadata,
     )
